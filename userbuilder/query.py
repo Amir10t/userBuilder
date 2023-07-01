@@ -16,4 +16,3 @@ mycursor = conn.cursor()
 
 # create table
 # mycursor.execute("CREATE TABLE person(id VARCHAR(255),name VARCHAR(255),family VARCHAR(255))")
-

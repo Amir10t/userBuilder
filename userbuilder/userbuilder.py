@@ -27,43 +27,32 @@ def createID(n): # Long of ID
     return ID
 
 
-# ID - Time Create Acount - Name - Family - Age - City - Nationality - PhoneNumber   -=> in Dictionary
-dic = {}
-dic['ID'] = createID(8)
-
-# This Lines of Date {
-now = datetime.datetime.today()
-mm = str(now.month)
-dd = str(now.day)
-yyyy = str(now.year)
-# hour = str(now.hour)
-# mi = str(now.minute)
-# ss = str(now.second)
-
-# dic['Date'] =  mm + "/" + dd + "/" + yyyy
-# }
-
-print("Please fill out the the below Subjects ->")
-dic['Name'] = input("Enter Your Name : ") #TODO: Conecct Name And Family --> FullName ; Then Print it
-dic['Family'] = input("Enter Your Family : ")
-# dic['Age'] = input("Enter Your Age : ") #TODO: Print Permissible Age
-# dic['City'] = input("Enter Your City : ")
-# dic['Nationality'] = input("Enter Your Nationality : ")
-# dic['PhoneNumber'] = int(input("Enter Your PhoneNumber : ")) #TODO: Sent Message For Number
+def createUser():
+    # ID - Name - Family   -=> in Dictionary
+    dic = {}
+    dic['ID'] = createID(6)
+    
+    print("Please fill out the the below Subjects ->")
+    dic['Name'] = input("Enter Your Name : ") #TODO: Conecct Name And Family --> FullName ; Then Print it
+    dic['Family'] = input("Enter Your Family : ")
 
 
 
-sql = "INSERT INTO person (id,name,family) VALUES (%s, %s, %s)"
-val = (dic['ID'], dic['Name'], dic['Family'])
-mycursor.execute(sql, val)
-conn.commit()
-print(mycursor.rowcount)
+    sql = "INSERT INTO person (id,name,family) VALUES (%s, %s, %s)"
+    val = (dic['ID'], dic['Name'], dic['Family'])
+    mycursor.execute(sql, val)
+    conn.commit()
+    # print(mycursor.rowcount)
 
-print(dic)
+    return dic
 
+# createUser()
 
-mycursor.execute("SELECT id,name,family FROM person")
-result = mycursor.fetchall()
+def inforUser(id:str):
+    mycursor.execute(f"SELECT * FROM person WHERE id = '{id}'")
+    result = mycursor.fetchall()
 
-for x in result:
-    print(x)
+    for x in result:
+        print(x)
+        
+# inforUser('Y2pWwh')
