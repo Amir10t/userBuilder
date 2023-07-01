@@ -55,4 +55,4 @@ def inforUser(id:str):
     for x in result:
         print(x)
         
-# inforUser('Y2pWwh')
+inforUser('Y2pWwh')
