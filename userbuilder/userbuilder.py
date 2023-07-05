@@ -3,6 +3,7 @@
 from random import randint
 import datetime
 import mysql.connector
+from tkinter import *
 
 # connect database
 conn = mysql.connector.connect(host = '127.0.0.1',
@@ -32,10 +33,13 @@ def createUser():
     dic = {}
     dic['ID'] = createID(6)
     
-    print("Please fill out the the below Subjects ->")
-    dic['Name'] = input("Enter Your Name : ") #TODO: Conecct Name And Family --> FullName ; Then Print it
-    dic['Family'] = input("Enter Your Family : ")
+    # print("Please fill out the the below Subjects ->")
+    # dic['Name'] = input("Enter Your Name : ") #TODO: Conecct Name And Family --> FullName ; Then Print it
+    # dic['Family'] = input("Enter Your Family : ")
 
+
+    dic['Name'] = str(first_name.get())
+    dic['Family'] = str(last_name.get())
 
 
     sql = "INSERT INTO person (id,name,family) VALUES (%s, %s, %s)"
@@ -44,15 +48,49 @@ def createUser():
     conn.commit()
     # print(mycursor.rowcount)
 
+    showID.config(text=f"Warning Copy Your ID...{dic['ID']}",fg="red")
     return dic
 
 # createUser()
 
-def inforUser(id:str):
+def inforUser():
+    id = workID.get()
     mycursor.execute(f"SELECT * FROM person WHERE id = '{id}'")
     result = mycursor.fetchall()
 
-    for x in result:
-        print(x)
+
+    showID.config(text=result,fg='blue')
+    # for x in result:
+    #     print(x)
         
-inforUser('Y2pWwh')
+# inforUser('Y2pWwh')
+
+def deleteUser():
+    mycursor.execute(f"DELETE FROM person WHERE id='{workID.get()}'")
+    conn.commit()
+
+win = Tk()
+win.minsize(300,250)
+win.maxsize(400,350)
+win.geometry("350x300")
+
+Label(win,text ="Frist Name",font='20').pack()
+first_name = Entry(win)
+first_name.pack()
+
+Label(win,text="Last Name",font='20').pack()
+last_name = Entry(win)
+last_name.pack()
+
+Button(win,text="sign in",command=createUser).pack()
+showID = Label(win,text='')
+showID.pack()
+
+Label(win,text="Log in with enter your ID",font='20').pack()
+workID = Entry(win)
+workID.pack()
+
+Button(win,text="delete ID",command=deleteUser).pack()
+Button(win,text="log in",command=inforUser).pack()
+
+win.mainloop()
