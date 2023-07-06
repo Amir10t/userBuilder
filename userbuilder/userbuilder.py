@@ -29,41 +29,37 @@ def createID(n): # Long of ID
 
 
 def createUser():
-    # ID - Name - Family   -=> in Dictionary
-    dic = {}
-    dic['ID'] = createID(6)
-    
-    # print("Please fill out the the below Subjects ->")
-    # dic['Name'] = input("Enter Your Name : ") #TODO: Conecct Name And Family --> FullName ; Then Print it
-    # dic['Family'] = input("Enter Your Family : ")
+    if first_name.get() != '' and last_name.get() != '':
+        # ID - Name - Family   -=> in Dictionary
+        dic = {}
+        dic['ID'] = createID(6)
 
 
-    dic['Name'] = str(first_name.get())
-    dic['Family'] = str(last_name.get())
+        dic['Name'] = str(first_name.get())
+        dic['Family'] = str(last_name.get())
 
 
-    sql = "INSERT INTO person (id,name,family) VALUES (%s, %s, %s)"
-    val = (dic['ID'], dic['Name'], dic['Family'])
-    mycursor.execute(sql, val)
-    conn.commit()
-    # print(mycursor.rowcount)
+        sql = "INSERT INTO person (id,name,family) VALUES (%s, %s, %s)"
+        val = (dic['ID'], dic['Name'], dic['Family'])
+        mycursor.execute(sql, val)
+        conn.commit()
 
-    showID.config(text=f"Warning Copy Your ID...{dic['ID']}",fg="red")
-    return dic
+        showStatus.config(text=f"Warning Copy Your ID...{dic['ID']}",fg="red")
+        return dic
+    else:
+        showStatus.config(text=f"Please fill out!",fg="red")
 
-# createUser()
 
 def inforUser():
     id = workID.get()
-    mycursor.execute(f"SELECT * FROM person WHERE id = '{id}'")
-    result = mycursor.fetchall()
+    if id != '':
+        mycursor.execute(f"SELECT * FROM person WHERE id = '{id}'")
+        result = mycursor.fetchall()
 
 
-    showID.config(text=result,fg='blue')
-    # for x in result:
-    #     print(x)
-        
-# inforUser('Y2pWwh')
+        showStatus.config(text=result,fg='blue')
+    else:
+        showStatus.config(text=f"Please fill out!",fg="red")
 
 def deleteUser():
     mycursor.execute(f"DELETE FROM person WHERE id='{workID.get()}'")
@@ -83,8 +79,8 @@ last_name = Entry(win)
 last_name.pack()
 
 Button(win,text="sign in",command=createUser).pack()
-showID = Label(win,text='')
-showID.pack()
+showStatus = Label(win,text='')
+showStatus.pack()
 
 Label(win,text="Log in with enter your ID",font='20').pack()
 workID = Entry(win)
